@@ -6,6 +6,7 @@ import pickle
 import jellyfish
 import re
 import os
+import datetime as dt
 
 # Next we create an instance of this class.
 # The first argument is the name of the application’s module or package.
@@ -53,6 +54,9 @@ def lookup():
             new_page_check = "http://norroen.info/dct/new/" + dict_link_new[search_word[0]] + ".html"
         except:
             new_page_check = "http://norroen.info/dct/new/"
+
+        with open(os.path.join(os.getcwd(), "stats/history.txt"), 'a', encoding='utf-8') as file:
+            file.write(str(dt.datetime.now()) + '    |    ' + search_word +  '\n')
 
         return render_template('results.html',
         zoega_text = zoega_text, zoega_respond_1 = zoega_respond_main, zoega_respond_2 = zoega_respond_alt,
