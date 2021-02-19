@@ -4,13 +4,15 @@ import jellyfish
 def find_word(word, dictionary, dict_name):
     """Return word definition from dictionary"""
     try:
-        return ("Geir T. Zoega: " if dict_name == "Zoega"
-            else "Richard Cleasby: " if dict_name == "Cleasby"
+        return ("Geir T. Zoega dictionary: " if dict_name == "Zoega"
+            else "Richard Cleasby dictionary: " if dict_name == "Cleasby"
             else "Новый древнеисландско-русский словарь: "), dictionary[word]
     except:
-        return ("К сожалению, \"{}\" не найдено.".format(word) if dict_name == "New"
-            else "Sorry, no \"{input_word}\" was directly found in {dict_name} vocabualary.".format(input_word = word, dict_name = dict_name)), ""
-
+        #return ("К сожалению, \"{}\" не найдено.".format(word) if dict_name == "New"
+        #    else "Sorry, no \"{input_word}\" was directly found in {dict_name} vocabualary.".format(input_word = word, dict_name = dict_name)), ""
+        return ("Geir T. Zoega dictionary: " if dict_name == "Zoega"
+            else "Richard Cleasby dictionary: " if dict_name == "Cleasby"
+            else "Новый древнеисландско-русский словарь: "), ""
 
 
 def find_levi(word, dictionary):
@@ -572,14 +574,17 @@ def zoega_alt_find(word, dict_zoega, verb_forms):
         if len(val_findings) == 0:
             return "No fuzzy search results for \"{}\".".format(word), findings
         else:
-            return "There are {} fuzzy search results for \"{}\" in Zoega dictionary:".format(len(val_findings), word), val_findings
+            #return "There are {} fuzzy search results for \"{}\" in Zoega dictionary:".format(len(val_findings), word), val_findings
+            return "{} fuzzy search results for \"{}\":".format(len(val_findings), word), val_findings
     else:
         for value in val_findings:
             if value not in findings:
                 findings.append(value)
 
-        return "There {res_num} fuzzy search results for \"{input_word}\" in Zoega dictionary:".format(
-        res_num = "is " + str(len(findings)) if len(findings) == 1 else "are " + str(len(findings)), input_word = word), findings
+        #return "There {res_num} fuzzy search results for \"{input_word}\":".format(
+        #res_num = "is " + str(len(findings)) if len(findings) == 1 else "are " + str(len(findings)), input_word = word), findings
+        return "{res_num} fuzzy search results for \"{input_word}\":".format(
+        res_num = str(len(findings)), input_word = word), findings
 
 
 def cleasby_alt_find(word,  dict_cleasby, verb_forms):
@@ -589,13 +594,17 @@ def cleasby_alt_find(word,  dict_cleasby, verb_forms):
         if len(val_findings)==0:
             return "No fuzzy search results for \"{}\".".format(word), findings
         else:
-            return "There are {} fuzzy search results for \"{}\" in Cleasby vocabualary:".format(len(val_findings), word), val_findings
+            #return "There are {} fuzzy search results for \"{}\" in Cleasby vocabualary:".format(len(val_findings), word), val_findings
+            return "{} fuzzy search results for \"{}\":".format(len(val_findings), word), val_findings
     else:
         for value in val_findings:
             if value not in findings:
                 findings.append(value)
-        return "There {res_num} fuzzy search results for \"{input_word}\" in Cleasby vocabualary:".format(
-        res_num = "is " + str(len(findings)) if len(findings) == 1 else "are " + str(len(findings)), input_word = word), findings
+        #return "There {res_num} fuzzy search results for \"{input_word}\":".format(
+        #res_num = "is " + str(len(findings)) if len(findings) == 1 else "are " + str(len(findings)), input_word = word), findings
+        return "{res_num} fuzzy search results for \"{input_word}\":".format(
+        res_num = str(len(findings)), input_word = word), findings
+
 
 
 def new_alt_find(word, dict_new, verb_forms):
