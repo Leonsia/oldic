@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Old Icelandic Dictionary</title>
+    <meta name = "description" content = "Look up Old Islandic words">
+    <meta name = "keywords" content = "old icelandic, old north, translation, icelandic dictionary, Zoega dictionary, Cleasby dictionary">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href= "{{ url_for('static', filename='pictures/favicon3.ico') }}" type="image/x-icon">
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+    <!--<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+
+  <body>
+
+    <div class = "bkg">
+
+      <a href = "http://127.0.0.1:5000/"><img src = "{{ url_for('static', filename='pictures/logo7.png') }}" class = "img_logo"></a>
+
+      <div class="login">
+	        <h1>Search for Old Icelandic word:</h1>
+          <form action="{{ url_for('lookup')}}" method="post">
+            <button type="button" class="btn btn-key">ð</button>
+            <button type="button" class="btn btn-key">þ</button>
+            <button type="button" class="btn btn-key">æ</button>
+            <button type="button" class="btn btn-key">œ</button>
+            <button type="button" class="btn btn-key">ø</button>
+            <button type="button" class="btn btn-key">ǫ</button>
+            <button type="button" class="btn btn-key">ö</button>
+            <button type="button" class="btn btn-key">á</button>
+            <button type="button" class="btn btn-key">ó</button>
+            <button type="button" class="btn btn-key">é</button>
+            <button type="button" class="btn btn-key">í</button>
+            <button type="button" class="btn btn-key">ú</button>
+            <button type="button" class="btn btn-key">ý</button>
+    	      <input type="text" name="rate" placeholder="Enter the word: " id = "display"/>
+            <button type="submit" class="btn btn-primary btn-block btn-large">LOOK UP</button>
+          </form>
+          <br>
+          <br>
+      </div>
+
+    </div>
+    <script src="{{ url_for('static', filename='javascript/jquery-3.5.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/keyboard.js') }}"> </script>
+  </body>
+</html>
