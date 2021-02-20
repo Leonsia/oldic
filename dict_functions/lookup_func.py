@@ -6,13 +6,13 @@ def find_word(word, dictionary, dict_name):
     try:
         return ("Geir T. Zoega dictionary: " if dict_name == "Zoega"
             else "Richard Cleasby dictionary: " if dict_name == "Cleasby"
-            else "Новый древнеисландско-русский словарь: "), dictionary[word]
+            else "Новый древнеисландско-русский словарь: "), dictionary[word], 1
     except:
         #return ("К сожалению, \"{}\" не найдено.".format(word) if dict_name == "New"
         #    else "Sorry, no \"{input_word}\" was directly found in {dict_name} vocabualary.".format(input_word = word, dict_name = dict_name)), ""
         return ("Geir T. Zoega dictionary: " if dict_name == "Zoega"
             else "Richard Cleasby dictionary: " if dict_name == "Cleasby"
-            else "Новый древнеисландско-русский словарь: "), ""
+            else "Новый древнеисландско-русский словарь: "), "", 0
 
 
 def find_levi(word, dictionary):
@@ -572,10 +572,10 @@ def zoega_alt_find(word, dict_zoega, verb_forms):
 
     if len(findings) == 0:
         if len(val_findings) == 0:
-            return "No fuzzy search results for \"{}\".".format(word), findings
+            return "No fuzzy search results for \"{}\".".format(word), findings, 0
         else:
             #return "There are {} fuzzy search results for \"{}\" in Zoega dictionary:".format(len(val_findings), word), val_findings
-            return "{} fuzzy search results for \"{}\":".format(len(val_findings), word), val_findings
+            return "{} fuzzy search results for \"{}\":".format(len(val_findings), word), val_findings, 1
     else:
         for value in val_findings:
             if value not in findings:
@@ -584,7 +584,7 @@ def zoega_alt_find(word, dict_zoega, verb_forms):
         #return "There {res_num} fuzzy search results for \"{input_word}\":".format(
         #res_num = "is " + str(len(findings)) if len(findings) == 1 else "are " + str(len(findings)), input_word = word), findings
         return "{res_num} fuzzy search results for \"{input_word}\":".format(
-        res_num = str(len(findings)), input_word = word), findings
+        res_num = str(len(findings)), input_word = word), findings, 1
 
 
 def cleasby_alt_find(word,  dict_cleasby, verb_forms):
@@ -592,10 +592,10 @@ def cleasby_alt_find(word,  dict_cleasby, verb_forms):
     findings, val_findings = fuzzy_search(word, dict_cleasby, verb_forms = verb_forms, search_values = True, limit_values = True, search_para = True, replace_o = False, add_levi = False)
     if len(findings) == 0:
         if len(val_findings)==0:
-            return "No fuzzy search results for \"{}\".".format(word), findings
+            return "No fuzzy search results for \"{}\".".format(word), findings, 0
         else:
             #return "There are {} fuzzy search results for \"{}\" in Cleasby vocabualary:".format(len(val_findings), word), val_findings
-            return "{} fuzzy search results for \"{}\":".format(len(val_findings), word), val_findings
+            return "{} fuzzy search results for \"{}\":".format(len(val_findings), word), val_findings, 1
     else:
         for value in val_findings:
             if value not in findings:
@@ -603,7 +603,7 @@ def cleasby_alt_find(word,  dict_cleasby, verb_forms):
         #return "There {res_num} fuzzy search results for \"{input_word}\":".format(
         #res_num = "is " + str(len(findings)) if len(findings) == 1 else "are " + str(len(findings)), input_word = word), findings
         return "{res_num} fuzzy search results for \"{input_word}\":".format(
-        res_num = str(len(findings)), input_word = word), findings
+        res_num = str(len(findings)), input_word = word), findings, 1
 
 
 
@@ -613,16 +613,16 @@ def new_alt_find(word, dict_new, verb_forms):
 
     if len(findings) == 0:
         if len(val_findings) == 0:
-            return "Нет результатов нечеткого поиска для \"{}\".".format(word), findings
+            return "Нет результатов нечеткого поиска для \"{}\".".format(word), findings, 0
         else:
             return "{length} {res_form} нечеткого поиска для \"{input_word}\"".format(
             res_form = "результат" if str(len(val_findings))[-1] == "1" else "результата" if str(len(findings))[-1] in ["2","3","4"]  else "результатов",
             length = len(val_findings), input_word = word
-            ), val_findings
+            ), val_findings, 1
     else:
         for value in val_findings:
             if value not in findings:
                 findings.append(value)
         return "{length} {res_form} нечеткого поиска для \"{input_word}\":".format(
             res_form = "результат" if str(len(findings))[-1] == "1" else "результата" if str(len(findings))[-1] in ["2","3","4"]  else "результатов",
-            length = len(findings), input_word = word), findings
+            length = len(findings), input_word = word), findings, 1

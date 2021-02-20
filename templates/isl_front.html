@@ -43,6 +43,13 @@
           <br>
       </div>
 
+      <div class = "recent_block">
+        <h2>Recent search:</h2>
+        {% for item in recent_results %}
+        <p>{{ item }}</p>
+        {% endfor %}
+      </div>
+
     </div>
     <script src="{{ url_for('static', filename='javascript/jquery-3.5.1.js') }}"></script>
     <script src="{{ url_for('static', filename='javascript/keyboard.js') }}"> </script>

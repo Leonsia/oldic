@@ -8,6 +8,9 @@ import re
 import os
 import datetime as dt
 
+# Store recent queries
+recent_words = ["garðr", "ormr", "bók", "maðr", "galdr", "gestr", "leita"]
+
 # Next we create an instance of this class.
 # The first argument is the name of the application’s module or package.
 # If you are using a single module (as in this example), you should use __name__ because depending on
@@ -21,7 +24,7 @@ app = Flask(__name__)
 # We use the route() decorator to tell Flask what URL should trigger our function.
 @app.route('/')
 def home():
-    return render_template('isl_front.html')
+    return render_template('isl_front.html', recent_results = recent_words[::-1])
 
 
 @app.route('/lookup', methods=['POST'])
@@ -31,24 +34,27 @@ def lookup():
 
     if len(search_word) > 0:
 
-        zoega_text, zoega_respond_main = dict_functions.find_word(search_word.replace("ǫ", "ö"),  dict_zoega, "Zoega")
-        zoega_respond_alt, zoega_respond_found =  dict_functions.zoega_alt_find(search_word.replace("ǫ", "ö"),  dict_zoega, verb_forms = verb_forms)
+        zoega_text, zoega_respond_main, flag_success_zoega_1 = dict_functions.find_word(search_word.replace("ǫ", "ö"),  dict_zoega, "Zoega")
+        zoega_respond_alt, zoega_respond_found, flag_success_zoega_2 =  dict_functions.zoega_alt_find(search_word.replace("ǫ", "ö"),  dict_zoega, verb_forms = verb_forms)
+        flag_success_zoega = flag_success_zoega_1 or flag_success_zoega_2
 
         try:
             zoega_page_check = "http://norroen.info/dct/zoega/" + dict_link_zoega[search_word.replace("ǫ", "ö")[0]] + ".html"
         except:
             zoega_page_check = "http://norroen.info/dct/zoega/"
 
-        cleasby_text, cleasby_respond_main = dict_functions.find_word(search_word.replace("ǫ", "ö"), dict_cleasby, "Cleasby")
-        cleasby_respond_alt, cleasby_respond_found = dict_functions.cleasby_alt_find(search_word.replace("ǫ", "ö"), dict_cleasby, verb_forms = verb_forms)
+        cleasby_text, cleasby_respond_main, flag_success_cleasby_1 = dict_functions.find_word(search_word.replace("ǫ", "ö"), dict_cleasby, "Cleasby")
+        cleasby_respond_alt, cleasby_respond_found, flag_success_cleasby_2 = dict_functions.cleasby_alt_find(search_word.replace("ǫ", "ö"), dict_cleasby, verb_forms = verb_forms)
+        flag_success_cleasby = flag_success_cleasby_1 or flag_success_cleasby_2
 
         try:
             cleasby_page_check = "http://norroen.info/dct/cleasby/" + dict_link_cleasby[search_word.replace("ǫ", "ö")[0]] + ".html"
         except:
             cleasby_page_check = "http://norroen.info/dct/cleasby/"
 
-        new_text, new_respond_main = dict_functions.find_word(search_word.replace("ö", "ǫ"), dict_new, "New")
-        new_respond_alt, new_respond_found = dict_functions.new_alt_find(search_word.replace("ö", "ǫ"), dict_new, verb_forms = verb_forms)
+        new_text, new_respond_main, flag_success_rus_1 = dict_functions.find_word(search_word.replace("ö", "ǫ"), dict_new, "New")
+        new_respond_alt, new_respond_found, flag_success_rus_2 = dict_functions.new_alt_find(search_word.replace("ö", "ǫ"), dict_new, verb_forms = verb_forms)
+        flag_success_rus = flag_success_rus_1 or flag_success_rus_2
 
         try:
             new_page_check = "http://norroen.info/dct/new/" + dict_link_new[search_word[0]] + ".html"
@@ -58,13 +64,17 @@ def lookup():
         with open(os.path.join(os.getcwd(), "stats/history.txt"), 'a', encoding='utf-8') as file:
             file.write(str(dt.datetime.now()) + '    |    ' + search_word +  '\n')
 
+        if flag_success_zoega or flag_success_cleasby or flag_success_rus:
+            recent_words.append(search_word)
+
         return render_template('results.html',
         zoega_text = zoega_text, zoega_respond_1 = zoega_respond_main, zoega_respond_2 = zoega_respond_alt,
         zoega_alt_results = zoega_respond_found, zoega_check_link  = zoega_page_check,
         cleasby_text = cleasby_text, cleasby_respond_1 = cleasby_respond_main, cleasby_respond_2 = cleasby_respond_alt,
         cleasby_alt_results = cleasby_respond_found, cleasby_check_link  =  cleasby_page_check,
         new_text = new_text, new_respond_1 = new_respond_main, new_respond_2 = new_respond_alt,
-        new_alt_results = new_respond_found, new_check_link  =  new_page_check
+        new_alt_results = new_respond_found, new_check_link  =  new_page_check,
+        recent_results = recent_words[::-1]
         )
 
     else:
@@ -74,9 +84,12 @@ def lookup():
         cleasby_text = "", cleasby_respond_1 = "", cleasby_respond_2 = "",
         cleasby_alt_results ="", cleasby_check_link  =  "http://norroen.info/dct/cleasby/",
         new_text = "", new_respond_1 = "", new_respond_2 = "",
-        new_alt_results ="", new_check_link  =  "http://norroen.info/dct/new/"
+        new_alt_results ="", new_check_link  =  "http://norroen.info/dct/new/",
+        recent_results = recent_words[::-1]
         )
 
+if len(recent_words) > 10:
+    recent_words = recent_words[-10:]
 
 if __name__ == "__main__":
 
