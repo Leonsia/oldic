@@ -40,18 +40,6 @@ body {
 }
 
 
-/*
-.zoega_respond {
-	position: absolute;
-	background: rgba(0,0,0,.7);
-	width: 30%;
-	height: 100%;
-	padding: 15px 10px 10px 15px;
-	font-size: 14px;
-	line-height: 1.5;
-	text-align: left;
-	}*/
-
 .dict_block {
 	position: absolute;
 	width: 35%;
@@ -82,6 +70,7 @@ body {
 	}
 
 .recent_block {
+	display: none;
 	position: absolute;
 	top: 33%;
 	right: 5%;
@@ -94,6 +83,15 @@ body {
 	padding: 5px 10px 10px 15px;
 	border: 1px solid #0C960C;
 	border-radius: 10px;
+	}
+
+.q_block {
+	width: 95%;
+	background: rgba(11,22,2,.48);
+	padding: 10px 10px 10px 10px;
+	font-size: 14px;
+	text-align: left;
+	line-height: 2;
 	}
 
 .collapsible {

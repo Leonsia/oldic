@@ -40,11 +40,13 @@
     	      <input type="text" name="rate" placeholder="Enter the word: " id = "display"/>
             <button type="submit" class="btn btn-primary btn-block btn-large">LOOK UP</button>
           </form>
-          <br>
-          <br>
-      </div>
-        <div class = "dict_block">
 
+          <div class = "q_block">
+            <p><span>Recent search:</span> <i>First word.  Second. And another one.  And another one.  And another one.</i></p>
+          </div>
+      </div>
+
+      <div class = "dict_block">
         <div class="dict_respond zoega_respond">
           <h2>{{ zoega_text }}</h2>
            {% for item in zoega_respond_1.split(";") %}

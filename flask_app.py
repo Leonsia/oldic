@@ -9,7 +9,7 @@ import os
 import datetime as dt
 
 # Store recent queries
-recent_words = ["garðr", "ormr", "bók", "maðr", "galdr", "gestr", "leita"]
+recent_words = ["garðr", "ormr", "bók", "maðr", "galdr", "gestr", "leita", "barn", "áss"]
 
 # Next we create an instance of this class.
 # The first argument is the name of the application’s module or package.
@@ -66,6 +66,7 @@ def lookup():
 
         if flag_success_zoega or flag_success_cleasby or flag_success_rus:
             recent_words.append(search_word)
+            recent_words.pop(0)
 
         return render_template('results.html',
         zoega_text = zoega_text, zoega_respond_1 = zoega_respond_main, zoega_respond_2 = zoega_respond_alt,
@@ -88,8 +89,6 @@ def lookup():
         recent_results = recent_words[::-1]
         )
 
-if len(recent_words) > 10:
-    recent_words = recent_words[-10:]
 
 if __name__ == "__main__":
 

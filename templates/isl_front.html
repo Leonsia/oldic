@@ -39,8 +39,13 @@
     	      <input type="text" name="rate" placeholder="Enter the word: " id = "display"/>
             <button type="submit" class="btn btn-primary btn-block btn-large">LOOK UP</button>
           </form>
-          <br>
-          <br>
+          <div class = "q_block">
+            <p><span>Recent search:</span>
+              {% for item in recent_results %}
+              &emsp;{{ item }}&ensp;
+              {% endfor %}
+            </p>
+          </div>
       </div>
 
       <div class = "recent_block">
