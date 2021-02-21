@@ -56,6 +56,8 @@ def lookup():
         new_respond_alt, new_respond_found, flag_success_rus_2 = dict_functions.new_alt_find(search_word.replace("ö", "ǫ"), dict_new, verb_forms = verb_forms)
         flag_success_rus = flag_success_rus_1 or flag_success_rus_2
 
+        flag_success = flag_success_zoega or flag_success_cleasby or flag_success_rus
+
         try:
             new_page_check = "http://norroen.info/dct/new/" + dict_link_new[search_word[0]] + ".html"
         except:
@@ -64,30 +66,37 @@ def lookup():
         with open(os.path.join(os.getcwd(), "stats/history.txt"), 'a', encoding='utf-8') as file:
             file.write(str(dt.datetime.now()) + '    |    ' + search_word +  '\n')
 
-        if flag_success_zoega or flag_success_cleasby or flag_success_rus:
+        if flag_success:
             recent_words.append(search_word)
             recent_words.pop(0)
 
-        return render_template('results.html',
+        html_page = render_template('results.html',
         zoega_text = zoega_text, zoega_respond_1 = zoega_respond_main, zoega_respond_2 = zoega_respond_alt,
         zoega_alt_results = zoega_respond_found, zoega_check_link  = zoega_page_check,
         cleasby_text = cleasby_text, cleasby_respond_1 = cleasby_respond_main, cleasby_respond_2 = cleasby_respond_alt,
         cleasby_alt_results = cleasby_respond_found, cleasby_check_link  =  cleasby_page_check,
         new_text = new_text, new_respond_1 = new_respond_main, new_respond_2 = new_respond_alt,
         new_alt_results = new_respond_found, new_check_link  =  new_page_check,
-        recent_results = recent_words[::-1]
-        )
+        recent_results = recent_words[::-1])
+
+        if flag_success:
+            with open("results/" + search_word + ".html", "w", encoding='utf-8') as file:
+                file.write(html_page)
+
+        return html_page
 
     else:
-        return render_template('results.html',
+        html_page = render_template('results.html',
         zoega_text = "Sorry, you didn't enter anything!", zoega_respond_1 = "Please try again or: ",
         zoega_respond_2 = "", zoega_alt_results ="", zoega_check_link  =  "http://norroen.info/dct/zoega/",
         cleasby_text = "", cleasby_respond_1 = "", cleasby_respond_2 = "",
         cleasby_alt_results ="", cleasby_check_link  =  "http://norroen.info/dct/cleasby/",
         new_text = "", new_respond_1 = "", new_respond_2 = "",
         new_alt_results ="", new_check_link  =  "http://norroen.info/dct/new/",
-        recent_results = recent_words[::-1]
-        )
+        recent_results = recent_words[::-1])
+
+        return html_page
+
 
 
 if __name__ == "__main__":
