@@ -26,7 +26,11 @@ app = Flask(__name__)
 # We use the route() decorator to tell Flask what URL should trigger our function.
 @app.route('/')
 def home():
-    return render_template('isl_front.html', recent_results = recent_words[::-1])
+    html_page = render_template('isl_front.html', recent_results = recent_words[::-1])
+    #with open("index.html", "w", encoding='utf-8') as file:
+    #    file.write(html_page)
+    return html_page
+    #return render_template('isl_front.html', recent_results = recent_words[::-1])
 
 
 @app.route('/lookup', methods=['POST'])
