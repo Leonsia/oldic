@@ -7,9 +7,11 @@ import jellyfish
 import re
 import os
 import datetime as dt
+from random import shuffle
 
 # Store recent queries
 recent_words = ["garðr", "ormr", "bók", "maðr", "galdr", "gestr", "leita", "barn", "áss"]
+shuffle(recent_words)
 
 # Next we create an instance of this class.
 # The first argument is the name of the application’s module or package.
