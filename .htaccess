@@ -1,0 +1,14 @@
+# Hide the contents of directories
+RewriteEngine on
+RewriteRule ^stats/.*$ - [F,L]
+RewriteRule ^tmp/.*$ - [F,L]
+RewriteRule ^templates/.*$ - [F,L]
+RewriteRule ^dicts/.*$ - [F,L]
+RewriteRule ^dict_functions/.*$ - [F,L]
+RewriteRule ^cgi-bin/.*$ - [F,L]
+RewriteRule ^__pycache__/.*$ - [F,L]
+
+<FilesMatch "\.(py|txt)$">
+Order allow,deny
+Deny from all
+</FilesMatch>
