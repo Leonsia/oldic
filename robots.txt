@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /results
+Allow: /index.html
+Disallow: /
