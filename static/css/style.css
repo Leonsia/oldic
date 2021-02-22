@@ -290,6 +290,20 @@ footer {
 }
 
 
+.page_404 {
+	background: rgba(11,22,2,.48);
+	border: 1px solid #0C960C;
+	border-radius: 10px;
+	padding: 20px;
+	height: 450px;
+}
+
+.page_404 h1 {
+	font-size: 112px;
+	margin-bottom: 0px;
+}
+
+
 @media (max-width: 1400px) {
 	.login_result {
 		left: 60%;

@@ -105,6 +105,10 @@ def lookup():
         return html_page
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('page_404.html'), 404
+    
 
 if __name__ == "__main__":
 
@@ -128,6 +132,7 @@ if __name__ == "__main__":
 
     with open('dicts/verb_forms_all.pickle', 'rb') as f:   # load dumped dictionary with strong verb forms
         verb_forms = pickle.load(f)
+
 
     app.run(debug=True)
 
