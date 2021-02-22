@@ -70,7 +70,8 @@ def lookup():
             new_page_check = "http://norroen.info/dct/new/"
 
         with open(os.path.join(os.getcwd(), "stats/history.txt"), 'a', encoding='utf-8') as file:
-            file.write(str(dt.datetime.now()) + '    |    ' + search_word +  '\n')
+            (file.write(str(dt.datetime.now()) + '    |    ' + search_word.ljust(12) +  '    | ' + str(flag_success_zoega) + ' | '
+             + str(flag_success_cleasby) +  ' | ' + str(flag_success_rus) + '\n'))
 
         if flag_success:
             recent_words.append(search_word)
