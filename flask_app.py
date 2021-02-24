@@ -1,9 +1,8 @@
 # First we imported the Flask class. An instance of this class will be our WSGI application.
 from flask import Flask
-from flask import request, jsonify, render_template
+from flask import request, redirect, render_template
 import dict_functions
 import pickle
-import jellyfish
 import re
 import os
 import datetime as dt
@@ -20,6 +19,7 @@ shuffle(recent_words)
 # This is needed so that Flask knows where to look for templates, static files, and so on.
 app = Flask(__name__)
 
+existing_pages = [name.strip(".html") for name in os.listdir("results")]
 #with open(os.path.join(os.getcwd(), "dicts/demo.txt"), 'r') as f:   # load test file
 #    demo = f.read()
 
@@ -40,6 +40,18 @@ def lookup():
 
     if len(search_word) > 0:
 
+        #if search_word in existing_pages:
+
+        #    with open(os.path.join(os.getcwd(), "stats/history.txt"), 'a', encoding='utf-8') as file:
+        #        file.write(str(dt.datetime.now()) + '    |    ' + search_word.ljust(12) +  '\n')
+
+        #    recent_words.append(search_word)
+        #    recent_words.pop(0)
+
+        #    return render_template("../results/" + search_word + ".html")
+            #return redirect("/results/" + search_word + ".html")
+
+        #else:
         zoega_text, zoega_respond_main, flag_success_zoega_1 = dict_functions.find_word(search_word.replace("ǫ", "ö"),  dict_zoega, "Zoega")
         zoega_respond_alt, zoega_respond_found, flag_success_zoega_2 =  dict_functions.zoega_alt_find(search_word.replace("ǫ", "ö"),  dict_zoega, verb_forms = verb_forms)
         flag_success_zoega = flag_success_zoega_1 or flag_success_zoega_2
@@ -71,7 +83,7 @@ def lookup():
 
         with open(os.path.join(os.getcwd(), "stats/history.txt"), 'a', encoding='utf-8') as file:
             (file.write(str(dt.datetime.now()) + '    |    ' + search_word.ljust(12) +  '    | ' + str(flag_success_zoega) + ' | '
-             + str(flag_success_cleasby) +  ' | ' + str(flag_success_rus) + '\n'))
+                + str(flag_success_cleasby) +  ' | ' + str(flag_success_rus) + '\n'))
 
         if flag_success:
             recent_words.append(search_word)
@@ -107,8 +119,12 @@ def lookup():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('page_404.html'), 404
-    
+    return render_template('error_handlers/page_404.html'), 404
+
+#@app.errorhandler(403)
+#def forbidden(e):
+#    return render_template('error_handlers/page_403.html'), 403
+
 
 if __name__ == "__main__":
 
