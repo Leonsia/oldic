@@ -8,8 +8,6 @@ def find_word(word, dictionary, dict_name):
             else "Richard Cleasby dictionary: " if dict_name == "Cleasby"
             else "Новый древнеисландско-русский словарь: "), dictionary[word], 1
     except:
-        #return ("К сожалению, \"{}\" не найдено.".format(word) if dict_name == "New"
-        #    else "Sorry, no \"{input_word}\" was directly found in {dict_name} vocabualary.".format(input_word = word, dict_name = dict_name)), ""
         return ("Geir T. Zoega dictionary: " if dict_name == "Zoega"
             else "Richard Cleasby dictionary: " if dict_name == "Cleasby"
             else "Новый древнеисландско-русский словарь: "), "", 0
@@ -476,7 +474,7 @@ def paradigm_verb(word, dict_words):
 
 def paradigm_search(word, dictionary, replace_o = False):
     """Search for normal word form based on words grammar paradigms"""
-    lemmas_noun = drop_noun_article(word)                                       # change
+    lemmas_noun = drop_noun_article(word)
     lemmas_verb = drop_verb_participle(word)
 
     if replace_o:
@@ -487,10 +485,10 @@ def paradigm_search(word, dictionary, replace_o = False):
         for lemma in lemmas_noun:
             para_words.extend(paradigm_nouns(lemma.replace("ǫ", "ö"), dict_words))
         # --------------Adjectives-------------------------------------------------
-        para_words.extend(paradigm_adj(word.replace("ǫ", "ö"), dict_words))  # add
+        para_words.extend(paradigm_adj(word.replace("ǫ", "ö"), dict_words))
         # --------------Verbs-----------------------------------------------------
         para_words.extend(paradigm_verb(word.replace("ǫ", "ö"), dict_words))
-        for lemma in lemmas_verb:                                                             # add
+        for lemma in lemmas_verb:
             para_words.extend(paradigm_verb(lemma.replace("ǫ", "ö"), dict_words))
 
         return [dictionary[key.replace("ö", "ǫ")] for key in set(para_words) if key != word]
@@ -506,7 +504,7 @@ def paradigm_search(word, dictionary, replace_o = False):
         para_words.extend(paradigm_adj(word, dict_words))  #add
          # --------------Verbs-----------------------------------------------------
         para_words.extend(paradigm_verb(word, dict_words))
-        for lemma in lemmas_verb:                                                             # add
+        for lemma in lemmas_verb:
             para_words.extend(paradigm_verb(lemma, dict_words))
 
         return [dictionary[key] for key in set(para_words) if key != word]
@@ -568,16 +566,16 @@ def fuzzy_search(word, dictionary, verb_forms, search_values = False, limit_valu
 def zoega_alt_find(word, dict_zoega, verb_forms):
     """Alternative search of words by similarity"""
     # Get direct and fuzzy search results for a given word
-    findings, val_findings = (fuzzy_search(word, dict_zoega, verb_forms = verb_forms,
-    search_values = True, limit_values = False, search_para = True, replace_o = False, add_levi = False))
+    findings, val_findings = fuzzy_search(word, dict_zoega, verb_forms = verb_forms,
+    search_values = True, limit_values = False, search_para = True, replace_o = False, add_levi = False)
 
     if len(findings) == 0:      # Case there are no direct search results in Zoega dictionary.
 
         if len(val_findings) == 0:      # And case there are no fuzzy search results in Zoega dictionary.
 
             if len(word) > 6:    # If the word is long enough, let's suggest it is compounded and search again but it's first part.
-                findings_part, val_findings_part = (fuzzy_search(word[:4], dict_zoega, verb_forms = verb_forms,
-                search_values = True, limit_values = False, search_para = True, replace_o = False, add_levi = False))
+                findings_part, val_findings_part = fuzzy_search(word[:4], dict_zoega, verb_forms = verb_forms,
+                search_values = True, limit_values = False, search_para = True, replace_o = False, add_levi = False)
 
                 if len(findings_part) or len(val_findings_part) > 0:    # If the first partial search brings some result, return it.
                     findings = findings_part
@@ -585,12 +583,12 @@ def zoega_alt_find(word, dict_zoega, verb_forms):
                     for value in val_findings:  # Append fuzzy search results to direct search results, such that direct search results go first.
                         if value not in findings:
                             findings.append(value)
-                    return "Nothing for \"{input_word}\". {res_num} fuzzy search results for \"{part_word}\" in \"{input_word}\":".format(
+                    return "<span>Fuzzy search</span>: nothing for \"{input_word}\". {res_num} results for \"{part_word}\" in \"{input_word}\":".format(
                     res_num = str(len(findings)), input_word = word, part_word = word[:4]), findings, 1
 
                 else:    # Case the first partial search doesn't bring any result, go to the second search with first 3 letters.
-                    findings_part, val_findings_part = (fuzzy_search(word[:3], dict_zoega, verb_forms = verb_forms,
-                    search_values = True, limit_values = False, search_para = True, replace_o = False, add_levi = False))
+                    findings_part, val_findings_part = fuzzy_search(word[:3], dict_zoega, verb_forms = verb_forms,
+                    search_values = True, limit_values = False, search_para = True, replace_o = False, add_levi = False)
 
                     if len(findings_part) or len(val_findings_part) > 0:    # If the second partial search brings some result, return it.
                         findings = findings_part
@@ -598,23 +596,23 @@ def zoega_alt_find(word, dict_zoega, verb_forms):
                         for value in val_findings:  # Append fuzzy search results to direct search results, such that direct search results go first.
                             if value not in findings:
                                 findings.append(value)
-                        return "Nothing for \"{input_word}\". {res_num} fuzzy search results for \"{part_word}\" in \"{input_word}\":".format(
+                        return "<span>Fuzzy search</span>: nothing for \"{input_word}\". {res_num} results for \"{part_word}\" in \"{input_word}\":".format(
                     res_num = str(len(findings)), input_word = word, part_word = word[:3]), findings, 1
 
                     else:   # Case none partial search bring any result, return empty result.
-                        return "No fuzzy search results for \"{}\".".format(word), findings, 0
+                        return "<span>Fuzzy search</span>: no results for \"{}\".".format(word), findings, 0
 
             else:   # Case the word is not long enough to be compounded and no search results for it, return empty result.
-                return "No fuzzy search results for \"{}\".".format(word), findings, 0
+                return "<span>Fuzzy search</span>: no results for \"{}\".".format(word), findings, 0
 
         else:   # Case there are fuzzy search results in Zoega dictionary, but there are no direct search results
-            return "{} fuzzy search results for \"{}\":".format(len(val_findings), word), val_findings, 1
+            return "<span>Fuzzy search</span>: {} results for \"{}\":".format(len(val_findings), word), val_findings, 1
 
     else:   # Case there are direct search results in Zoega dictionary
         for value in val_findings: # Append fuzzy search results to direct search results, such that direct search results go first.
             if value not in findings:
                 findings.append(value)
-        return "{res_num} fuzzy search results for \"{input_word}\":".format(res_num = str(len(findings)), input_word = word), findings, 1
+        return "<span>Fuzzy search</span>: {res_num} results for \"{input_word}\":".format(res_num = str(len(findings)), input_word = word), findings, 1
 
 
 def cleasby_alt_find(word,  dict_cleasby, verb_forms):
@@ -636,7 +634,7 @@ def cleasby_alt_find(word,  dict_cleasby, verb_forms):
                     for value in val_findings:  # Append fuzzy search results to direct search results, such that direct search results go first.
                         if value not in findings:
                             findings.append(value)
-                    return "Nothing for \"{input_word}\". {res_num} fuzzy search results for \"{part_word}\" in \"{input_word}\":".format(
+                    return "<span>Fuzzy search</span>: nothing for \"{input_word}\". {res_num} results for \"{part_word}\" in \"{input_word}\":".format(
                     res_num = str(len(findings)), input_word = word, part_word = word[:4]), findings, 1
 
                 else:    # Case the first partial search doesn't bring any result, go to the second search with first 3 letters.
@@ -649,24 +647,24 @@ def cleasby_alt_find(word,  dict_cleasby, verb_forms):
                         for value in val_findings:  # Append fuzzy search results to direct search results, such that direct search results go first.
                             if value not in findings:
                                 findings.append(value)
-                        return "Nothing for \"{input_word}\". {res_num} fuzzy search results for \"{part_word}\" in \"{input_word}\":".format(
+                        return "<span>Fuzzy search</span>: nothing for \"{input_word}\". {res_num} results for \"{part_word}\" in \"{input_word}\":".format(
                         res_num = str(len(findings)), input_word = word, part_word = word[:3]), findings, 1
 
                     else:   # Case none partial search bring any result, return empty result.
-                        return "No fuzzy search results for \"{}\".".format(word), findings, 0
+                        return "<span>Fuzzy search</span>: no results for \"{}\".".format(word), findings, 0
 
             else:   # Case the word is not long enough to be compounded and no search results for it, return empty result.
-                return "No fuzzy search results for \"{}\".".format(word), findings, 0
+                return "<span>Fuzzy search</span>: no results for \"{}\".".format(word), findings, 0
 
 
-        else:     # Case there are fuzzy search results in Cleasby dictionary, but there are no direct search results
-            return "{} fuzzy search results for \"{}\":".format(len(val_findings), word), val_findings, 1
+        else:     # Case there are fuzzy search results in Cleasby dictionary, but no direct search results
+            return "<span>Fuzzy search</span>: {} results for \"{}\":".format(len(val_findings), word), val_findings, 1
 
     else:    # Case there are direct search results in Cleasby  dictionary
         for value in val_findings:  # Append fuzzy search results to direct search results, such that direct search results go first.
             if value not in findings:
                 findings.append(value)
-        return "{res_num} fuzzy search results for \"{input_word}\":".format(
+        return "<span>Fuzzy search</span>: {res_num} results for \"{input_word}\":".format(
         res_num = str(len(findings)), input_word = word), findings, 1
 
 
@@ -677,9 +675,9 @@ def new_alt_find(word, dict_new, verb_forms):
     findings, val_findings = fuzzy_search(word, dict_new, verb_forms = verb_forms, search_values = True,
     limit_values = False, search_para = True, replace_o = True, add_levi = False)
 
-    if len(findings) == 0:   # Case there are no direct search results in NewIsl dictionary.
+    if len(findings) == 0:   # Case there are no direct search results in Oldicelandic Russian dictionary.
 
-        if len(val_findings) == 0:   # And case there are no fuzzy search results in NewIsl dictionary.
+        if len(val_findings) == 0:   # And case there are no fuzzy search results in Oldicelandic Russian dictionary.
 
                 if len(word) > 6:    # If the word is long enough, let's suggest it is compounded and search again but it's first part.
                     findings_part, val_findings_part = fuzzy_search(word[:4], dict_new, verb_forms = verb_forms,
@@ -691,7 +689,7 @@ def new_alt_find(word, dict_new, verb_forms):
                         for value in val_findings:  # Append fuzzy search results to direct search results, such that direct search results go first.
                             if value not in findings:
                                 findings.append(value)
-                        return "Не найдено \"{input_word}\". {length} {res_form} нечеткого поиска для \"{part_word}\" в \"{input_word}\":".format(
+                        return "<span>Нечеткий поиск</span>: \"{input_word}\" не найдено. {length} {res_form} для \"{part_word}\" в \"{input_word}\":".format(
                             input_word = word,
                             length = str(len(findings)),
                             res_form = "результат" if str(len(val_findings))[-1] == "1" else "результата" if str(len(findings))[-1] in ["2","3","4"]  else "результатов",
@@ -707,27 +705,27 @@ def new_alt_find(word, dict_new, verb_forms):
                             for value in val_findings:  # Append fuzzy search results to direct search results, such that direct search results go first.
                                 if value not in findings:
                                     findings.append(value)
-                            return "Не найдено \"{input_word}\". {length} {res_form} нечеткого поиска для \"{part_word}\" в \"{input_word}\":".format(
+                            return "<span>Нечеткий поиск</span>: \"{input_word}\" не найдено. {length} {res_form} для \"{part_word}\" в \"{input_word}\":".format(
                                 input_word = word,
                                 length = str(len(findings)),
                                 res_form = "результат" if str(len(val_findings))[-1] == "1" else "результата" if str(len(findings))[-1] in ["2","3","4"]  else "результатов",
                                 part_word = word[:3]), findings, 1
 
                         else:   # Case none partial search bring any result, return empty result.
-                            return "Нет результатов нечеткого поиска для \"{}\".".format(word), findings, 0
+                            return "<span>Нечеткий поиск</span>: нет результатов для \"{}\".".format(word), findings, 0
 
                 else:   # Case the word is not long enough to be compounded and no search results for it, return empty result.
-                    return "Нет результатов нечеткого поиска для \"{}\".".format(word), findings, 0
+                    return "<span>Нечеткий поиск</span>: нет результатов для \"{}\".".format(word), findings, 0
 
-        else:    # Case there are fuzzy search results in NewIsl dictionary, but there are no direct search results
-            return "{length} {res_form} нечеткого поиска для \"{input_word}\"".format(
+        else:    # Case there are fuzzy search results in  Oldicelandic Russian dictionary, but there are no direct search results.
+            return "<span>Нечеткий поиск</span>: {length} {res_form} для \"{input_word}\".".format(
             res_form = "результат" if str(len(val_findings))[-1] == "1" else "результата" if str(len(findings))[-1] in ["2","3","4"]  else "результатов",
             length = len(val_findings), input_word = word), val_findings, 1
 
-    else:    # Case there are direct search results in NewIsl  dictionary
+    else:    # Case there are direct search results in  Oldicelandic Russian  dictionary
         for value in val_findings:  # Append fuzzy search results to direct search results, such that direct search results go first.
             if value not in findings:
                 findings.append(value)
-        return "{length} {res_form} нечеткого поиска для \"{input_word}\":".format(
+        return "<span>Нечеткий поиск</span>: {length} {res_form} для \"{input_word}\":".format(
             res_form = "результат" if str(len(findings))[-1] == "1" else "результата" if str(len(findings))[-1] in ["2","3","4"]  else "результатов",
             length = len(findings), input_word = word), findings, 1

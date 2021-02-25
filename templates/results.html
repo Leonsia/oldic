@@ -102,9 +102,9 @@
 
         <div class="dict_respond rus_respond">
           <h2>{{ new_text }}</h2>
-          <p>{{ new_respond_1 }}</p>
-          <p>{{ new_respond_2 }}</p>
           {% autoescape false %}
+          <p>{{ new_respond_1 }}</p>
+          <p>{{ new_respond_2 }}</p>          
           <ol>
             {% for item in new_alt_results[:5] %}
             <li>{{ item }}</li>
