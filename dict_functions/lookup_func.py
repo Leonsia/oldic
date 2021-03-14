@@ -573,9 +573,13 @@ def zoega_alt_find(word, dict_zoega, verb_forms):
 
         if len(val_findings) == 0:      # And case there are no fuzzy search results in Zoega dictionary.
 
-            if len(word) > 6:    # If the word is long enough, let's suggest it is compounded and search again but it's first part.
+            if len(word) > 4:    # If the word is long enough, let's suggest it is compounded and search again but it's first part.
+
                 findings_part, val_findings_part = fuzzy_search(word[:4], dict_zoega, verb_forms = verb_forms,
                 search_values = True, limit_values = False, search_para = True, replace_o = False, add_levi = False)
+
+                if word[:4] in dict_zoega:
+                    findings_part.insert(0, dict_zoega[word[:4]])
 
                 if len(findings_part) or len(val_findings_part) > 0:    # If the first partial search brings some result, return it.
                     findings = findings_part
@@ -589,6 +593,9 @@ def zoega_alt_find(word, dict_zoega, verb_forms):
                 else:    # Case the first partial search doesn't bring any result, go to the second search with first 3 letters.
                     findings_part, val_findings_part = fuzzy_search(word[:3], dict_zoega, verb_forms = verb_forms,
                     search_values = True, limit_values = False, search_para = True, replace_o = False, add_levi = False)
+
+                    if word[:3] in dict_zoega:
+                        findings_part.insert(0, dict_zoega[word[:3]])
 
                     if len(findings_part) or len(val_findings_part) > 0:    # If the second partial search brings some result, return it.
                         findings = findings_part
@@ -624,9 +631,12 @@ def cleasby_alt_find(word,  dict_cleasby, verb_forms):
 
         if len(val_findings) == 0:   # And case there are no fuzzy search results in Cleasby dictionary.
 
-            if len(word) > 6:    # If the word is long enough, let's suggest it is compounded and search again but it's first part.
+            if len(word) > 4:    # If the word is long enough, let's suggest it is compounded and search again but it's first part.
                 findings_part, val_findings_part = fuzzy_search(word[:4], dict_cleasby, verb_forms = verb_forms,
                 search_values = True, limit_values = True, search_para = True, replace_o = False, add_levi = False)
+
+                if word[:4] in dict_cleasby:
+                    findings_part.insert(0, dict_cleasby[word[:4]])
 
                 if len(findings_part) or len(val_findings_part) > 0:    # If the first partial search brings some result, return it.
                     findings = findings_part
@@ -640,6 +650,9 @@ def cleasby_alt_find(word,  dict_cleasby, verb_forms):
                 else:    # Case the first partial search doesn't bring any result, go to the second search with first 3 letters.
                     findings_part, val_findings_part = fuzzy_search(word[:3], dict_cleasby, verb_forms = verb_forms,
                     search_values = True, limit_values = True, search_para = True, replace_o = False, add_levi = False)
+
+                    if word[:3] in dict_cleasby:
+                        findings_part.insert(0, dict_cleasby[word[:3]])
 
                     if len(findings_part) or len(val_findings_part) > 0:    # If the second partial search brings some result, return it.
                         findings = findings_part
@@ -679,9 +692,12 @@ def new_alt_find(word, dict_new, verb_forms):
 
         if len(val_findings) == 0:   # And case there are no fuzzy search results in Oldicelandic Russian dictionary.
 
-                if len(word) > 6:    # If the word is long enough, let's suggest it is compounded and search again but it's first part.
+                if len(word) > 4:    # If the word is long enough, let's suggest it is compounded and search again but it's first part.
                     findings_part, val_findings_part = fuzzy_search(word[:4], dict_new, verb_forms = verb_forms,
                     search_values = True, limit_values = False, search_para = True, replace_o = True, add_levi = False)
+
+                    if word[:4] in dict_new:
+                        findings_part.insert(0, dict_new[word[:4]])
 
                     if len(findings_part) or len(val_findings_part) > 0:    # If the first partial search brings some result, return it.
                         findings = findings_part
@@ -698,6 +714,9 @@ def new_alt_find(word, dict_new, verb_forms):
                     else:    # Case the first partial search doesn't bring any result, go to the second search with first 3 letters.
                         findings_part, val_findings_part = fuzzy_search(word[:3], dict_new, verb_forms = verb_forms,
                         search_values = True, limit_values = False, search_para = True, replace_o = True, add_levi = False)
+
+                        if word[:3] in dict_new:
+                            findings_part.insert(0, dict_new[word[:3]])
 
                         if len(findings_part) or len(val_findings_part) > 0:    # If the second partial search brings some result, return it.
                             findings = findings_part
