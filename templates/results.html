@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Old Icelandic Dictionary</title>
-    <meta name = "description" content = "Look up Old Islandic words">
+    <meta name = "description" content = "Look up Old Icelandic words">
     <meta name = "keywords" content = "old icelandic, old north, translation, icelandic dictionary, Zoega dictionary, Cleasby dictionary">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
     <link rel="shortcut icon" href= "{{ url_for('static', filename='pictures/favicon3.ico') }}" type="image/x-icon">
@@ -21,7 +21,7 @@
       <a href = "http://127.0.0.1:5000/"><img src = "{{ url_for('static', filename='pictures/logo7.png') }}" class = "img_logo logo_result"></a>
 
       <div class="login login_result">
-	        <h1>Search for Old Icelandic word:</h1>
+	        <h1>Search for Old Norse word:</h1>
           <form action="{{ url_for('lookup')}}" method="post">
             <button type="button" class="btn btn-key">ð</button>
             <button type="button" class="btn btn-key">þ</button>
@@ -104,7 +104,7 @@
           <h2>{{ new_text }}</h2>
           {% autoescape false %}
           <p>{{ new_respond_1 }}</p>
-          <p>{{ new_respond_2 }}</p>          
+          <p>{{ new_respond_2 }}</p>
           <ol>
             {% for item in new_alt_results[:5] %}
             <li>{{ item }}</li>
@@ -124,12 +124,36 @@
 
       </div>
 
-      <div class = "recent_block">
-        <h2>Recent search:</h2>
-        {% for item in recent_results %}
-        <p>{{ item }}</p>
-        {% endfor %}
-      </div>
+      {% if text_blocks|length > 0 %}
+        <div class = "dict_block text_block">
+          <div class="dict_respond text_respond">
+
+            <h2>Old Norse texts: {{ text_blocks|length }} results</h2>
+            {% autoescape false %}
+              {% for block in text_blocks[:3] %}
+                <div class = "text_cite">
+                  {% for item in block %}
+                    <p>{{ item }}</p>
+                  {% endfor %}
+                </div>
+              {% endfor %}
+           {% if text_blocks|length > 3 %}
+              <button type="button" class="collapsible btn-center">Show all results >></button>
+              <div class = "hidden">
+                {% for block in text_blocks[3:] %}
+                  <div class = "text_cite">
+                    {% for item in block %}
+                      <p>{{ item }}</p>
+                    {% endfor %}
+                  </div>
+                {% endfor %}
+              </div>
+           {% endif %}
+           {% endautoescape %}
+         </div>
+       </div>
+    {% endif %}
+
 
     </div>
 

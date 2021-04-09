@@ -82,6 +82,9 @@ def lookup():
         # Check if any search in dictionaries has non-empty result.
         flag_success = flag_success_zoega or flag_success_cleasby or flag_success_rus
 
+        # Check word entrences in saga texts and get paragraphs with the word
+        text_blocks = dict_functions.search_word(search_word, master_edda_texts_fixed_on, master_edda_texts_fixed_ru)      
+
         # Store the searched word in log file with corresponding flags of non-empty results.
         with open(os.path.join(os.getcwd(), "stats/history.txt"), 'a', encoding='utf-8') as file:
             (file.write(str(dt.datetime.now()) + '    |    ' + search_word.ljust(12) +  '    | ' + str(flag_success_zoega) + ' | '
@@ -101,7 +104,7 @@ def lookup():
         cleasby_alt_results = cleasby_respond_found, cleasby_check_link  =  cleasby_page_check,
         new_text = new_text, new_respond_1 = new_respond_main, new_respond_2 = new_respond_alt,
         new_alt_results = new_respond_found, new_check_link  =  new_page_check,
-        recent_results = recent_words[::-1])
+        recent_results = recent_words[::-1], text_blocks = text_blocks)
 
         # Save generated html-page to the website catalog if the search was successful.
         if flag_success:
@@ -161,6 +164,12 @@ if __name__ == "__main__":
 
     with open('dicts/verb_forms_all.pickle', 'rb') as f:   #  Custom dictionary of strong and weak verbs generated from https://paradigms.langeslag.org/landing
         verb_forms = pickle.load(f)
+
+    with open('dicts/master_edda_texts_fixed_on.pickle', 'rb') as f:   #  Texts of Edda in Old-Norse
+        master_edda_texts_fixed_on = pickle.load(f)
+
+    with open('dicts/master_edda_texts_fixed_ru.pickle', 'rb') as f:   # Texts of Edda in Russian
+        master_edda_texts_fixed_ru = pickle.load(f)
 
 
     app.run(debug=True)

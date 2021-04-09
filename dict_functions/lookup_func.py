@@ -588,7 +588,7 @@ def zoega_alt_find(word, dict_zoega, verb_forms):
                         if value not in findings:
                             findings.append(value)
                     return "<span>Fuzzy search</span>: nothing for \"{input_word}\". {res_num} results for \"{part_word}\" in \"{input_word}\":".format(
-                    res_num = str(len(findings)), input_word = word, part_word = word[:4]), findings, 1
+                    res_num = str(len(findings)), input_word = word, part_word = word[:4]), findings, 0
 
                 else:    # Case the first partial search doesn't bring any result, go to the second search with first 3 letters.
                     findings_part, val_findings_part = fuzzy_search(word[:3], dict_zoega, verb_forms = verb_forms,
@@ -604,7 +604,7 @@ def zoega_alt_find(word, dict_zoega, verb_forms):
                             if value not in findings:
                                 findings.append(value)
                         return "<span>Fuzzy search</span>: nothing for \"{input_word}\". {res_num} results for \"{part_word}\" in \"{input_word}\":".format(
-                    res_num = str(len(findings)), input_word = word, part_word = word[:3]), findings, 1
+                    res_num = str(len(findings)), input_word = word, part_word = word[:3]), findings, 0
 
                     else:   # Case none partial search bring any result, return empty result.
                         return "<span>Fuzzy search</span>: no results for \"{}\".".format(word), findings, 0
@@ -645,7 +645,7 @@ def cleasby_alt_find(word,  dict_cleasby, verb_forms):
                         if value not in findings:
                             findings.append(value)
                     return "<span>Fuzzy search</span>: nothing for \"{input_word}\". {res_num} results for \"{part_word}\" in \"{input_word}\":".format(
-                    res_num = str(len(findings)), input_word = word, part_word = word[:4]), findings, 1
+                    res_num = str(len(findings)), input_word = word, part_word = word[:4]), findings, 0
 
                 else:    # Case the first partial search doesn't bring any result, go to the second search with first 3 letters.
                     findings_part, val_findings_part = fuzzy_search(word[:3], dict_cleasby, verb_forms = verb_forms,
@@ -661,7 +661,7 @@ def cleasby_alt_find(word,  dict_cleasby, verb_forms):
                             if value not in findings:
                                 findings.append(value)
                         return "<span>Fuzzy search</span>: nothing for \"{input_word}\". {res_num} results for \"{part_word}\" in \"{input_word}\":".format(
-                        res_num = str(len(findings)), input_word = word, part_word = word[:3]), findings, 1
+                        res_num = str(len(findings)), input_word = word, part_word = word[:3]), findings, 0
 
                     else:   # Case none partial search bring any result, return empty result.
                         return "<span>Fuzzy search</span>: no results for \"{}\".".format(word), findings, 0
@@ -709,7 +709,7 @@ def new_alt_find(word, dict_new, verb_forms):
                             input_word = word,
                             length = str(len(findings)),
                             res_form = "результат" if str(len(val_findings))[-1] == "1" else "результата" if str(len(findings))[-1] in ["2","3","4"]  else "результатов",
-                            part_word = word[:4]), findings, 1
+                            part_word = word[:4]), findings, 0
 
                     else:    # Case the first partial search doesn't bring any result, go to the second search with first 3 letters.
                         findings_part, val_findings_part = fuzzy_search(word[:3], dict_new, verb_forms = verb_forms,
@@ -728,7 +728,7 @@ def new_alt_find(word, dict_new, verb_forms):
                                 input_word = word,
                                 length = str(len(findings)),
                                 res_form = "результат" if str(len(val_findings))[-1] == "1" else "результата" if str(len(findings))[-1] in ["2","3","4"]  else "результатов",
-                                part_word = word[:3]), findings, 1
+                                part_word = word[:3]), findings, 0
 
                         else:   # Case none partial search bring any result, return empty result.
                             return "<span>Нечеткий поиск</span>: нет результатов для \"{}\".".format(word), findings, 0
