@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>{{ zoega_respond_2.split('\"')[1].capitalize() }} in Old Norse | Old Icelandic dictionaries</title>
-    <meta name = "description" content = "{{ zoega_text}}{{ zoega_respond_2.split(':')[1] }}, {{ cleasby_text }}{{ cleasby_respond_2.split(':')[1] }}, {{ new_text }}{{ new_respond_2.split(':')[1] }}.">
+    <title>Oldic.ru - fuzzy search in Old Norse | Old Icelandic dictionaries</title>
+    <meta name = "description" content = "Fast search for Old Norse and Old Icelandic words semantics in Old Icelandic-English and Russian dictionaries, and Old Icelandic texts.">
     <meta name = "keywords" content = "old icelandic-english dictionary, old icelandic-russian dictionary, old norse, old icelandic, zoega dictionary, cleasby dictionary">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
     <link rel="shortcut icon" href= "{{ url_for('static', filename='pictures/favicon3.ico') }}" type="image/x-icon">
@@ -51,7 +51,7 @@
       <div class = "dict_block">
 
         <div class="dict_respond zoega_respond">
-          <h2>{{ zoega_text }}</h2>          
+          <h2>{{ zoega_text }}</h2>
           {% autoescape false %}
            {% for item in zoega_respond_1.split(";") %}
           <p>{{ item }}</p>

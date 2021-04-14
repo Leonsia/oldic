@@ -31,7 +31,7 @@ def home():
 @app.route('/lookup', methods=['POST'])
 def lookup():
 
-    search_word = list(request.form.values())[0].lower().strip()    # Get the searched word as website form input
+    search_word = list(request.form.values())[0].lower().replace("<", "").replace(">", "").replace("/", "").replace("&", "").strip()    # Get the searched word as website form input
     if len(search_word) > 0:      # Check the input is not empty
 
         #if search_word in existing_pages:  # Check if the searched word is already present in the names of generated html-pages
@@ -83,7 +83,7 @@ def lookup():
         flag_success = flag_success_zoega or flag_success_cleasby or flag_success_rus
 
         # Check word entrences in saga texts and get paragraphs with the word
-        text_blocks = dict_functions.search_word(search_word, master_edda_texts_fixed_on, master_edda_texts_fixed_ru)      
+        text_blocks = dict_functions.search_word(search_word, master_edda_texts_fixed_on, master_edda_texts_fixed_ru)
 
         # Store the searched word in log file with corresponding flags of non-empty results.
         with open(os.path.join(os.getcwd(), "stats/history.txt"), 'a', encoding='utf-8') as file:
@@ -114,7 +114,7 @@ def lookup():
         return html_page
 
     else:   # If the input is empty, no need to conduct any search.
-        html_page = render_template('results.html',
+        html_page = render_template('results_empty.html',
         zoega_text = "Sorry, you didn't enter anything!", zoega_respond_1 = "Please try again or: ",
         zoega_respond_2 = "", zoega_alt_results ="", zoega_check_link  =  "http://norroen.info/dct/zoega/",
         cleasby_text = "", cleasby_respond_1 = "", cleasby_respond_2 = "",
