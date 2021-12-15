@@ -479,7 +479,8 @@ def paradigm_search(word, dictionary, replace_o = False):
 
     if replace_o:
 
-        dict_words = [key.replace("ǫ", "ö") for key in dictionary.keys() if key.lower()[0] == word[0]]
+        #dict_words = [key.replace("ǫ", "ö") for key in dictionary.keys() if key.lower()[0] == word[0]]
+        dict_words = [key.replace("ǫ", "ö") for key in dictionary.keys()]  # ключи словарей уже приведены к нижнему регистру
         # --------------Nouns-------------------------------------------------
         para_words = paradigm_nouns(word.replace("ǫ", "ö"), dict_words)
         for lemma in lemmas_noun:
@@ -495,7 +496,8 @@ def paradigm_search(word, dictionary, replace_o = False):
 
     else:
 
-        dict_words = [key for key in dictionary.keys() if key.lower()[0] == word[0]]
+        #dict_words = [key for key in dictionary.keys() if key.lower()[0] == word[0]]
+        dict_words = dictionary.keys()
         # --------------Nouns-------------------------------------------------
         para_words = paradigm_nouns(word, dict_words)
         for lemma in lemmas_noun:
@@ -518,28 +520,34 @@ def fuzzy_search(word, dictionary, verb_forms, search_values = False, limit_valu
     val_findings = []
 
     if not replace_o:
-        verb_forms = { key.replace("ǫ", "ö"): value for key, value in verb_forms.items()}
+        verb_forms = { key.replace("ǫ", "ö"): value for key, value in verb_forms.items() }
 
+    # 1. Сначала ищем соответствие слову среди форм глаголов, скаченных с сайта https://paradigms.langeslag.org.
     if word in verb_forms and word not in dictionary:
         verb_inf = verb_forms[word]
+        # Если глагольная форма есть в словаре, возвращаем значение из словаря.
+        # Если нет - возвращаем глагольную форму со ссылкой на сайт-источник.
         try:
             findings.append(dictionary[verb_inf])
         except:
             findings.append("<a href=\"https://paradigms.langeslag.org/?q=" + verb_inf + "\" target=\"_blank\">" + verb_inf + "</a>")
 
+    # 2. Затем ищем соответствия среди грамматических преобразований слова по правилам для существительного, прилагательного и глагола.
     findings_para = paradigm_search(word, dictionary, replace_o = replace_o)
     for item in findings_para:
         if item not in findings:
             findings.append(item)
 
-
+    # 3. Переходим к поиску по словарю
     for key, value in dictionary.items():
-        if key.lower() == word or value in findings:
+        if key == word or value in findings:
             pass
         else:
-            if word in key.lower():
+            # 3.1 Ищем вхождения слова в ключи словаря
+            if word in key:
                 findings.append(value.replace(word, "<span>" + word + "</span>"))
 
+            # 3.2 Ищем вхождения слова в текст словаря
             if search_values and len(word) > 2:
                 if limit_values:
                     if word in value[:300].lower():

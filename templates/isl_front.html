@@ -6,6 +6,7 @@
     <meta name = "description" content = "Fast search for Old Norse and Old Icelandic words semantics in Old Icelandic-English and Russian dictionaries, and Old Icelandic texts.">
     <meta name = "keywords" content = "old icelandic-english dictionary, old icelandic-russian dictionary, old norse, old icelandic, zoega dictionary, cleasby dictionary">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:image" content="{{ url_for('static', filename='pictures/cover.jpg') }}">
     <link rel="shortcut icon" href= "{{ url_for('static', filename='pictures/favicon3.ico') }}" type="image/x-icon">
     <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
@@ -48,12 +49,12 @@
           </div>
       </div>
 
-      <div class = "recent_block">
+    <!--  <div class = "recent_block">
         <h2>Recent search:</h2>
         {% for item in recent_results %}
         <p>{{ item }}</p>
         {% endfor %}
-      </div>
+      </div> -->
 
     </div>
     <script src="{{ url_for('static', filename='javascript/jquery-3.5.1.js') }}"></script>
